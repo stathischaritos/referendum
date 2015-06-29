@@ -1,0 +1,29 @@
+<template name="home">
+  <p>{{> loginButtons}} to add 1 new source and up/down vote existing ones up to 5 times.</p>
+
+   {{#if currentUser}}
+  	{{> contactForm}}
+   {{/if}}
+   {{> sourceList}}
+   {{> shareit}}
+</template>
+
+<template name="contactForm">
+  {{#autoForm collection="sources" id="contactForm" type="method" meteormethod="addSource"}}
+  <fieldset>
+    <legend>Submit source</legend>
+    {{> afQuickField name="title"}}
+    {{> afQuickField name="url"}}
+    <div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-default">Reset</button>
+    </div>
+  </fieldset>
+  {{/autoForm}}
+</template>
+
+<template name="sourceList">
+	{{#each sources}}
+		<div> {{title}}  <button class="upvote" sourceId="{{_id}}" >upvote</button> <button sourceId="{{_id}}" class="downvote">downvote</button> {{upvotes}} / {{downvotes}} </div>
+	{{/each}}
+</template>
