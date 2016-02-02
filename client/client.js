@@ -1,14 +1,24 @@
 
 sourceSchema = new SimpleSchema({
 	title:{
-        type: String
+        type: String,
+        autoform: {
+		    afFieldInput: {
+		      class: 'customInput form-control'
+		    }
+		}
     },
     description:{
         type: String,
         optional:true
     },
     url:{
-        type: String
+        type: String,
+        autoform: {
+		    afFieldInput: {
+		      class: 'customInput form-control'
+		    }
+		}
     },
     upvotes:{
     	type:Number,
@@ -52,6 +62,9 @@ Meteor.subscribe('sources');
 Template.sourceList.helpers({
   sources: function(){
   	return sources.find({},{sort: {total:-1}});
+  },
+  mySource:function(){
+  	return sources.find({userId:Meteor.userId});
   }
 });
 

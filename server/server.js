@@ -40,6 +40,7 @@ sourceSchema = new SimpleSchema({
         autoValue: function(){
             // this.userId always prints undefined, shouldn't it be null for usecase 1 and not null for usecase 2?
             console.log(this.userId);
+            // return this.userId;
     	}
     }
 });
@@ -51,8 +52,8 @@ Meteor.publish("sources", function(){
 	return sources.find();
 });
 
-sources.remove({});
-Meteor.users.remove({});
+// sources.remove({});
+// Meteor.users.remove({});
 
 Meteor.methods({
   addSource: function (source) {
@@ -71,7 +72,7 @@ Meteor.methods({
       title: source.title,
       timestamp: new Date(),
       userId: Meteor.userId(),
-      url: source.title
+      url: source.url
     });
 
   },
@@ -105,7 +106,6 @@ Meteor.methods({
     }
 
     var source = sources.findOne({userId:Meteor.userId()});
-
 
     if(source.downvotesDone){
     	var downvotesDone = source.downvotesDone;

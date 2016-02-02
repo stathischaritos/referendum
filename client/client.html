@@ -1,29 +1,78 @@
-<template name="home">
-  <p>{{> loginButtons}} to add 1 new source and up/down vote existing ones up to 5 times.</p>
+<head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
 
-   {{#if currentUser}}
-  	{{> contactForm}}
-   {{/if}}
-   {{> sourceList}}
-   {{> shareit}}
+<body style="padding-top:">
+
+	<div id="pageInfo" style="width:100%;">
+		<div class="row">
+			<div class="col-md-6">
+				{{> main}}
+			</div>
+			<div class="col-md-6">
+				{{> sourceList}}
+			</div>
+		</div>  	
+	</div>
+
+</body>
+
+<template name="main">
+	<div style="text-align:center;">
+
+		<div class="page-header">
+			<h2> Greek Referendum, 5th of July 2015</h2>
+		</div>
+
+		<a href="https://vote.heliosvoting.org/booth/vote.html?election_url=%2Fhelios%2Felections%2F97183808-1e51-11e5-994f-02e5b67ab25d" class="btn btn-primary" target="_blank">Vote now!</a>
+
+		<br>
+		<br>
+
+		{{> loginButtons}} {{#unless currentUser}} to add 1 new source and up/down vote existing ones up to 6 times.{{/unless}}
+
+	    {{#if currentUser}}
+	  		{{> contactForm}}
+	    {{/if}}
+
+	</div>
 </template>
 
 <template name="contactForm">
-  {{#autoForm collection="sources" id="contactForm" type="method" meteormethod="addSource"}}
-  <fieldset>
-    <legend>Submit source</legend>
-    {{> afQuickField name="title"}}
-    {{> afQuickField name="url"}}
-    <div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <button type="reset" class="btn btn-default">Reset</button>
-    </div>
-  </fieldset>
-  {{/autoForm}}
+	<div >
+	  {{#autoForm collection="sources" id="contactForm" type="method" meteormethod="addSource"}}
+	  <fieldset>
+	    <legend>Submit a new source. We are looking for facts, official statements and comprehensive opinions related to the referendum.</legend>
+	    {{> afQuickField name="title"}}
+	    {{> afQuickField name="url"}}
+	    <div>
+	      <button type="submit" class="btn btn-primary">Submit</button>
+	      <button type="reset" class="btn btn-default">Reset</button>
+	    </div>
+	  </fieldset>
+	  {{/autoForm}}
+	</div>
 </template>
 
 <template name="sourceList">
+	<div class="page-header">
+		<h2>Links of Interest</h2>
+	</div>
+
+	{{#each mySource}}
+		{{upvotesDone}}
+	{{/each}}
 	{{#each sources}}
-		<div> {{title}}  <button class="upvote" sourceId="{{_id}}" >upvote</button> <button sourceId="{{_id}}" class="downvote">downvote</button> {{upvotes}} / {{downvotes}} </div>
+		<div> 
+			<a href="{{url}}" target="_blank" > {{title}} </a> 
+		    <span sourceId="{{_id}}"  class="glyphicon glyphicon-plus upvote" aria-hidden="true"></span>
+		    {{upvotes}}  
+		    <span sourceId="{{_id}}"  class="glyphicon glyphicon-minus downvote" aria-hidden="true"></span>
+		    {{downvotes}} 
+		</div>
 	{{/each}}
 </template>
